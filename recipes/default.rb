@@ -17,22 +17,22 @@ user 'rainbow' do
     shell  '/bin/bash'
 end
 
-template '/var/www/html/index.html' do # ~FC033
-    source 'index.html.erb'
-    mode   '0644'
-    owner  'rainbow'
-    group  'rainbow'
-end
+# template '/var/www/html/index.html' do # ~FC033
+#     source 'index.html.erb'
+#     mode   '0644'
+#     owner  'rainbow'
+#     group  'rainbow'
+# end
 
 git '/tmp/mysources' do
-  repository 'git clone git://github.com/joelthelion/autojump.git'
+  repository 'https://github.com/wting/autojump.git'
   revision 'master'
   action :sync
 end
 
 bash 'install_something' do
-  user 'root'
-  cwd '/tmp/autojump'
+  user 'rainbow'
+  cwd '/tmp/mysources'
   code <<-EOH
   bash
   ./install.py
