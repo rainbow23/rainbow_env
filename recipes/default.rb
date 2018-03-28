@@ -23,42 +23,28 @@ user 'testchef' do
   action   [:create]
 end
 
-# user node['deploy_user'] do
+# directory '/tmp/autojump' do
+#   owner 'testchef'
+#   group 'testchef'
+#   mode '0777'
 #   action :create
-#   comment 'Application deploy user'
-#   home "/home/#{node['deploy_user']}"
-#   shell '/bin/bash'
-#   system true
-#   manage_home true
 # end
 
-directory '/home/testchef/mysources' do
-  owner 'testchef'
-  group 'testchef'
-  mode '0755'
-  action :create
+git '/tmp/autojump' do
+  repository 'https://github.com/wting/autojump.git'
+  revision 'master'
+  user "testchef"
+  group "testchef"
+  action :sync
 end
 
-# git '/home/testchef/mysources' do
-#   repository 'https://github.com/wting/autojump.git'
-#   revision 'master'
-#   action :sync
-# end
-
-# bash 'install_autojump' do
-#   user 'testchef'
-#   cwd '/tmp/mysources/autojump'
-#   code <<-EOH
-#   bash
-#   ./install.py
-#   EOH
-# end
-
-# git '/home/testchef' do
-#   repository 'https://github.com/testchef/dotfiles.git'
-#   revision 'master'
-#   action :sync
-# end
+bash 'install_autojump' do
+  # user 'testchef'
+  cwd '/tmp/autojump'
+  code <<-EOH
+  ./install.py
+  EOH
+end
 
 # # シンボリックリンクを作成
 # link '/home/testchef/_vimrc' do
