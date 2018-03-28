@@ -46,10 +46,31 @@ bash 'install_autojump' do
   EOH
 end
 
-# # シンボリックリンクを作成
-# link '/home/testchef/_vimrc' do
-#   to '/home/testchef/.vimrc'
-# end
+directory '/home/testchef/dotfiles' do
+  owner 'testchef'
+  group 'testchef'
+  mode '0755'
+  action :create
+end
+
+git '/home/testchef/dotfiles' do
+  repository 'https://github.com/rainbow23/dotfiles.git'
+  revision 'master'
+  user "testchef"
+  group "testchef"
+  action :sync
+end
+
+# シンボリックリンクを作成
+# work fine!
+link '/home/testchef/.vimrc' do
+  to '/home/testchef/dotfiles/_vimrc'
+end
+
+# work fine!
+link '/home/testchef/.bashrc' do
+  to '/home/testchef/dotfiles/_bashrc'
+end
 
 # link '/home/testchef/vimrepos' do
 #   to '/home/testchef/_.vim'
