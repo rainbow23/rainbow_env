@@ -14,5 +14,7 @@ platforms:
 suites:
   - name: default
     run_list:
+      - recipe[vim]
       - recipe[learn_chef_httpd::default]
+      - recipe[learn_chef_httpd::dotfiles]
     attributes:
