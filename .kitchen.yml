@@ -17,4 +17,6 @@ suites:
       - recipe[vim]
       - recipe[learn_chef_httpd::default]
       - recipe[learn_chef_httpd::dotfiles]
-    attributes:
+
+attributes:
+    makeuser: test_kitchen_user

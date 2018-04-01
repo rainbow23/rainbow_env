@@ -2,45 +2,54 @@
 # Recipe:: default
 #
 # Copyright (c) 2016 The Authors, All Rights Reserved.
+
 %w{git vim}.each do |pkg|
     package pkg do
         action :install
     end
 end
 
-user 'testchef' do
-  home     '/home/testchef'
-  shell    '/bin/bash'
-  password "$1$/xCc5j.9$BWyiV6YAKSdfWS43G1gwB1"
-  manage_home true
-  action   [:create]
-end
+data_bag('users').each do |id|
+    u = data_bag_item('users', id)
 
-group 'wheel' do
-  action  [:create]
-  members ["testchef"]
-  append true
-end
+    user u['id'] do
+        shell    u['shell']
+        uid       u['uid']
+        gid       u['gid']
+        password u['password']
+        # supports :manage_home => true, :non_unique => false
+        manage_home true
+        action   [:nothing]
+    end.run_action(:create)
 
-directory '/tmp/autojump' do
-  owner 'testchef'
-  group 'wheel'
-  mode '0777'
-  action :create
-end
+    group 'wheel' do
+      action  [:create]
+      members u['id']
+      append true
+    end
 
-git '/tmp/autojump' do
-  repository 'https://github.com/wting/autojump.git'
-  revision 'master'
-  user "testchef"
-  group "wheel"
-  action :sync
-end
+    autojump_path = '/home/' + u['id'] + '/autojump'
 
-bash 'install_autojump' do
-  # user 'testchef'
-  cwd '/tmp/autojump'
-  code <<-EOH
-  ./install.py
-  EOH
+    directory autojump_path do
+      owner u['id']
+      group 'wheel'
+      mode '0777'
+      action :create
+    end
+
+    git autojump_path do
+      repository 'https://github.com/wting/autojump.git'
+      revision 'master'
+      user u['id']
+      group 'wheel'
+      action :sync
+    end
+
+    bash 'install_autojump' do
+      environment ({ 'HOME' => ::Dir.home(u['id']), 'USER' => u['id']})
+      cwd autojump_path
+      code <<-EOH
+      ./install.py
+      EOH
+    end
 end
