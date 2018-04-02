@@ -17,7 +17,6 @@ data_bag('users').each do |id|
         uid       u['uid']
         gid       u['gid']
         password u['password']
-        # supports :manage_home => true, :non_unique => false
         manage_home true
         action   [:nothing]
     end.run_action(:create)
@@ -29,13 +28,6 @@ data_bag('users').each do |id|
     end
 
     autojump_path = '/home/' + u['id'] + '/autojump'
-
-    directory autojump_path do
-      owner u['id']
-      group 'wheel'
-      mode '0777'
-      action :create
-    end
 
     git autojump_path do
       repository 'https://github.com/wting/autojump.git'
