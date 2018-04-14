@@ -16,8 +16,8 @@ suites:
     run_list:
       - recipe[tmux::default]
       - recipe[vim::default]
-      - recipe[learn_chef_httpd::install]
-      - recipe[learn_chef_httpd::dotfiles]
+      - recipe[rainbow_env::install]
+      - recipe[rainbow_env::dotfiles]
     attributes:
        # tmux:
          # version: "2.6"

@@ -1,12 +1,12 @@
 #
-# Cookbook Name:: learn_chef_httpd
+# Cookbook Name:: rainbow_env
 # Spec:: default
 #
 # Copyright (c) 2016 The Authors, All Rights Reserved.
 
 require 'spec_helper'
 
-describe 'learn_chef_httpd::default' do
+describe 'rainbow_env::default' do
   context 'When all attributes are default, on an unspecified platform' do
     let(:chef_run) do
       runner = ChefSpec::ServerRunner.new(platform: 'centos', version: '7.2.1511')
