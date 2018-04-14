@@ -14,5 +14,12 @@ platforms:
 suites:
   - name: default
     run_list:
-      - recipe[learn_chef_httpd::default]
+      - recipe[tmux::default]
+      - recipe[vim::default]
+      - recipe[rainbow_env::install]
+      - recipe[rainbow_env::dotfiles]
     attributes:
+       # tmux:
+         # version: "2.6"
+         # checksum: "b17cd1"
+    makeuser: test_kitchen_user

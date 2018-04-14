@@ -1,0 +1,7 @@
+{
+  "id": "chefman",
+  "home": "/home/chefman",
+  "password": "$1$/xCc5j.9$BWyiV6YAKSdfWS43G1gwB1",
+  "ssh_keys": "~/.ssh/id_rsa.pub",
+  "shell": "\/bin\/bash"
+}
