@@ -1,4 +1,6 @@
-# %w{git vim tmux}.each do |pkg|
+include_recipe "vim::source"
+include_recipe "tmux"
+
 %w{git}.each do |pkg|
     package pkg do
         action :install
