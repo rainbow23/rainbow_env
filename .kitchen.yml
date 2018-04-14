@@ -16,6 +16,7 @@ suites:
     run_list:
       - recipe[tmux::default]
       - recipe[vim::default]
+      - recipe[zshell::default]
       - recipe[rainbow_env::install]
       - recipe[rainbow_env::dotfiles]
     attributes:

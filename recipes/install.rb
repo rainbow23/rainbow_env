@@ -25,8 +25,14 @@ data_bag('users').each do |id|
       append true
     end
 
-    autojump_path = '/home/' + u['id'] + '/autojump'
+    bash 'set_defalut_shell_to_zsh' do
+      cwd ::Dir.home(u['id'])
+      code <<-EOH
+        chsh -s /bin/zsh
+      EOH
+    end
 
+    autojump_path = '/home/' + u['id'] + '/autojump'
     git autojump_path do
       repository 'https://github.com/wting/autojump.git'
       revision   'master'
@@ -47,7 +53,6 @@ data_bag('users').each do |id|
     end
 
     tmux_plugin_manager_path = ::Dir.home(u['id']) + '/.tmux/plugins/tpm'
-
     bash 'install_tmux_plugin_manager' do
       environment ({ 'HOME' => ::Dir.home(u['id']), 'USER' => u['id']})
       cwd ::Dir.home(u['id'])

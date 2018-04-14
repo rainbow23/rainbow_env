@@ -4,3 +4,4 @@ metadata
 
 cookbook 'vim'
 cookbook 'tmux'
+cookbook 'zshell'
