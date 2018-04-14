@@ -49,7 +49,6 @@ data_bag('users').each do |id|
       code <<-EOH
       ./install.py
       EOH
-      not_if { ::File.directory?(autojump_path) }
     end
 
     tmux_plugin_manager_path = ::Dir.home(u['id']) + '/.tmux/plugins/tpm'
