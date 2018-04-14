@@ -8,6 +8,14 @@ data_bag('users').each do |id|
       user u['id']
       group 'wheel'
       action :sync
+      notifies :run, "bash[dotfiles_permission]"
+    end
+
+    bash "dotfiles_permission" do
+        cwd ::Dir.home(u['id'])
+        code <<-EOH
+        chmod 755 -R ./dotfiles
+        EOH
     end
 
     # シンボリックリンクを作成
@@ -24,12 +32,14 @@ data_bag('users').each do |id|
         end
     end
 
+    vimplug_path = ::Dir.home(u['id']) + '/.vim/autoload/plug.vim'
+
     bash 'install_vimplug' do
       environment ({ 'HOME' => ::Dir.home(u['id']), 'USER' => u['id']})
       code <<-EOH
       curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
       https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
       EOH
-      creates '/home/' + u['id'] + '.vim/autoload/plug.vim'
+      not_if { ::File.directory?(vimplug_path) }
     end
 end
